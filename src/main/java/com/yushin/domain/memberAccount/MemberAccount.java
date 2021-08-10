@@ -1,8 +1,8 @@
-package com.yushin.domain.userAccount;
+package com.yushin.domain.memberAccount;
 
 
 import com.yushin.domain.baseEntity;
-import com.yushin.domain.user.User;
+import com.yushin.domain.user.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,15 +12,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity
-public class UserAccount extends baseEntity {
+public class MemberAccount extends baseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId",nullable = false)
-    private User user;
+    @JoinColumn(name="memberId",nullable = false)
+    private Member member;
 
 
     @Column(length = 45,nullable = false)
@@ -31,8 +31,8 @@ public class UserAccount extends baseEntity {
     private String bankAccount;
 
     @Builder
-    public UserAccount(User user,String bankName,String bankAccount){
-    this.user=user;
+    public MemberAccount(Member member, String bankName, String bankAccount){
+    this.member =member;
     this.bankName=bankName;
     this.bankAccount=bankAccount;
     }
