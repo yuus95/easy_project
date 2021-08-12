@@ -2,10 +2,7 @@ package com.yushin.web.controller;
 
 
 import com.yushin.service.AuthService;
-import com.yushin.web.dto.MemberRequestDto;
-import com.yushin.web.dto.MemberResponseDto;
-import com.yushin.web.dto.TokenDto;
-import com.yushin.web.dto.TokenRequestDto;
+import com.yushin.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,22 +23,22 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto memberRequestDto) {
+    public ResponseEntity<MemberResponseDto> signup(@Valid @RequestBody MemberRequestDto memberRequestDto,BindingResult bindingResult) {
         return ResponseEntity.ok(authService.signup(memberRequestDto));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@Valid @RequestBody MemberRequestDto memberRequestDto,
+    public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginDto loginDto,
                                           BindingResult bindingResult)//꼭 valid 옆에 넣기
     {
-        if(bindingResult.hasErrors()){
-            Map<String,String> errorMap = new HashMap<>();
-            for(FieldError error : bindingResult.getFieldErrors()){
-                errorMap.put(error.getField(),error.getDefaultMessage());
-            }
-        }
+//        if(bindingResult.hasErrors()){
+//            Map<String,String> errorMap = new HashMap<>();
+//            for(FieldError error : bindingResult.getFieldErrors()){
+//                errorMap.put(error.getField(),error.getDefaultMessage());
+//            }
+//        }
 
-        return ResponseEntity.ok(authService.login(memberRequestDto));
+        return ResponseEntity.ok(authService.login(loginDto));
     }
 
     @PostMapping("/reissue")

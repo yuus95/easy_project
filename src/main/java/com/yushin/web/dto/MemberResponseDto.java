@@ -1,6 +1,6 @@
 package com.yushin.web.dto;
 
-import com.yushin.domain.user.Member;
+import com.yushin.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

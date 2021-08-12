@@ -1,8 +1,8 @@
 package com.yushin.service;
 
 
-import com.yushin.domain.user.Member;
-import com.yushin.domain.user.MemberRepository;
+import com.yushin.domain.member.Member;
+import com.yushin.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

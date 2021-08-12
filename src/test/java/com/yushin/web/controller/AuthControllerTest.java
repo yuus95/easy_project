@@ -1,22 +1,25 @@
 package com.yushin.web.controller;
 
-import com.yushin.domain.user.Authority;
-import com.yushin.domain.user.Member;
-import com.yushin.domain.user.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.yushin.domain.member.Authority;
+import com.yushin.domain.member.Member;
+import com.yushin.domain.member.MemberRepository;
+import com.yushin.web.dto.MemberRequestDto;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -37,25 +40,23 @@ class AuthControllerTest {
     @Test
     public void 회원가입() throws Exception{
         //given
-        Member testMember = memberRepository.save(Member.builder()
-                .nickname("유신")
-                .email("kkad45@naver.com")
-                .password("1234")
-                .phone("010-4710-5883")
-                .authority(Authority.ROLE_USER)
-                .build());
+
+        MemberRequestDto member =new MemberRequestDto("hello","kkad45@naver.com","1234","01047105883","1995-11-18");
 
         String url = "http://localhost:" + port +"/auth/login";
 
         //when
-        ResponseEntity<Long> responseEntity = testRestTemplate.postForEntity(url,testMember,Long.class);
+        ResponseEntity<Long> responseEntity = testRestTemplate.postForEntity(url,member,Long.class);
 
-        System.out.println("test");
+
 
 
         //then
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isEqualTo("kkad45@naver.com");
+
+        Optional<Member> byEmail = memberRepository.findByEmail(member.getEmail());
+        assertThat(byEmail.get().getId()).isEqualTo(1L);
     }
-
-
-
 }

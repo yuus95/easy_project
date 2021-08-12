@@ -1,6 +1,7 @@
 # easy_project
 배운내용으로 기능구현하기 - 가계부 만들기
 
+- SpringSecurity 적용중
 
 - DB 
     - URL : https://aquerytool.com/aquerymain/index/?rurl=b3fa9ab7-f9f1-4c9a-a6fd-a3e9b37bf8cb&

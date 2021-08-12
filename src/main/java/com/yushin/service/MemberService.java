@@ -1,6 +1,6 @@
 package com.yushin.service;
 
-import com.yushin.domain.user.MemberRepository;
+import com.yushin.domain.member.MemberRepository;
 import com.yushin.util.SecurityUtil;
 import com.yushin.web.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;

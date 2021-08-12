@@ -1,4 +1,4 @@
-package com.yushin.domain.user;
+package com.yushin.domain.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

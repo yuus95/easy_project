@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -13,7 +14,9 @@ import javax.persistence.Id;
 public class RefreshToken {
 
     @Id
-    private String key;
+    private String idKey;
+
+    @Column(length = 1000)
     private String value;
 
     public RefreshToken updateValue(String token) {
@@ -22,8 +25,8 @@ public class RefreshToken {
     }
 
     @Builder
-    public RefreshToken(String key, String value) {
-        this.key = key;
+    public RefreshToken(String idKey, String value) {
+        this.idKey = idKey;
         this.value = value;
     }
 }

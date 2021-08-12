@@ -2,7 +2,7 @@ package com.yushin.domain.memberAccount;
 
 
 import com.yushin.domain.baseEntity;
-import com.yushin.domain.user.Member;
+import com.yushin.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
