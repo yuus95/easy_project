@@ -2,7 +2,7 @@ package com.yushin.service;
 
 import com.yushin.domain.member.MemberRepository;
 import com.yushin.util.SecurityUtil;
-import com.yushin.web.dto.MemberResponseDto;
+import com.yushin.web.dto.member.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

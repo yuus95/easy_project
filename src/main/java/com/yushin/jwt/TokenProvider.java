@@ -1,7 +1,8 @@
 package com.yushin.jwt;
 
 
-import com.yushin.web.dto.TokenDto;
+import com.yushin.handler.ex.CustomException;
+import com.yushin.web.dto.member.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,10 +18,11 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import static com.yushin.handler.ex.ErrorCode.*;
 
 @Slf4j
 @Component
@@ -74,7 +76,7 @@ public class TokenProvider {
         Claims claims = parseClaims(accessToken);
 
         if (claims.get(AUTHORITIES_KEY) == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+            throw new CustomException(INVALID_AUTH_TOKEN);
         }
 
         // 클레임에서 권한 정보 가져오기

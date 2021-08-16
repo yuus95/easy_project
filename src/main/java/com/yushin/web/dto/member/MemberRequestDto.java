@@ -1,4 +1,4 @@
-package com.yushin.web.dto;
+package com.yushin.web.dto.member;
 
 import com.yushin.domain.member.Authority;
 import com.yushin.domain.member.Member;

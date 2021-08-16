@@ -13,6 +13,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.hibernate.criterion.Restrictions.and;
+
 /**
  * Spring Security Fliter Chain을 사용한다는것을 명시해주기 위해
  * @EnableWebSecurity 어노테이션 적용
@@ -90,7 +92,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .apply(new JwtSecurityConfig(tokenProvider))
+                .and()
+
+                .formLogin()
+                .disable();
 
         /**
          * jwt 없이 필터 적용

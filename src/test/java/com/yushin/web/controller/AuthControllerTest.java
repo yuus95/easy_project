@@ -1,10 +1,8 @@
 package com.yushin.web.controller;
 
-import com.yushin.domain.member.Authority;
 import com.yushin.domain.member.Member;
 import com.yushin.domain.member.MemberRepository;
-import com.yushin.web.dto.MemberRequestDto;
-import org.assertj.core.api.Assertions;
+import com.yushin.web.dto.member.MemberRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;

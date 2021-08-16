@@ -2,14 +2,11 @@ package com.yushin.jwt;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yushin.handler.ex.CustomException;
 import com.yushin.handler.ex.ErrorCode;
 import com.yushin.handler.ex.ErrorResponse;
-import com.yushin.web.dto.LoginDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -18,9 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Map;
-
-import static com.yushin.handler.ex.ErrorCode.*;
 
 /**
  * https://sas-study.tistory.com/362?category=784778 참고하기

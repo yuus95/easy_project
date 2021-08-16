@@ -1,4 +1,4 @@
-package com.yushin.web.dto;
+package com.yushin.web.dto.member;
 
 import com.yushin.domain.member.Member;
 import lombok.AllArgsConstructor;

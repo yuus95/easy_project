@@ -32,6 +32,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다"),
     NOT_FOLLOW(NOT_FOUND, "팔로우 중이지 않습니다"),
     NOT_MATCHED_EMAIL(NOT_FOUND,"이메일을 확인해주세요"),
+    CANNOT_FIND_ACCOUNT(NOT_FOUND,"해당 계좌를 등록하지 않았습니다."),
 
 
 

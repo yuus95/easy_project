@@ -5,9 +5,8 @@ import com.yushin.domain.refresh.RefreshTokenRepository;
 import com.yushin.domain.member.Member;
 import com.yushin.domain.member.MemberRepository;
 import com.yushin.handler.ex.CustomException;
-import com.yushin.handler.ex.ErrorCode;
 import com.yushin.jwt.TokenProvider;
-import com.yushin.web.dto.*;
+import com.yushin.web.dto.member.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -45,6 +44,14 @@ public class AuthService {
         if (memberRepository.findByEmail(loginDto.getEmail()).isEmpty()){
             throw new CustomException(NOT_MATCHED_EMAIL);
         }
+        Optional<Member> byEmail = memberRepository.findByEmail(loginDto.getEmail());
+
+        String password = byEmail.get().getPassword();
+        if (!passwordEncoder.matches(loginDto.getPassword(),password)){
+            throw new CustomException(NOT_MATCHED_PASSWORD);
+        }
+
+
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = loginDto.toAuthentication();
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
