@@ -24,14 +24,8 @@ import java.io.OutputStream;
 @Slf4j
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private ObjectMapper objectMappger = new ObjectMapper();
-    ErrorCode err =ErrorCode.NOT_MATCHED_PASSWORD;
+    ErrorCode err ;
 
-    ErrorResponse errorResponse =  ErrorResponse.builder()
-            .status(err.getHttpStatus().value())
-            .error(err.getHttpStatus().name())
-            .code(err.name())
-            .message(err.getDetail())
-            .build();
 
 
 
@@ -39,6 +33,21 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
+
+        String exception = (String)request.getAttribute("exception");
+        if(exception == null) {
+            err = ErrorCode.NOT_TOKEN;
+        }
+
+
+
+        ErrorResponse errorResponse =  ErrorResponse.builder()
+                .status(err.getHttpStatus().value())
+                .error(err.getHttpStatus().name())
+                .code(err.name())
+                .message(err.getDetail())
+                .build();
+
 
 
         // 유효한 자격증명을 제공하지 않고 접근하려 할때 401

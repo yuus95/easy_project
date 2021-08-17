@@ -24,4 +24,16 @@ public class ErrorResponse {
                         .message(errorCode.getDetail())
                         .build());
     }
+
+    public static ResponseEntity<ErrorResponse> toValidationResponseEntity(String message){
+        ErrorCode errorCode = ErrorCode.VALID_ERROR;
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ErrorResponse.builder()
+                        .status(errorCode.getHttpStatus().value())
+                        .error(errorCode.getHttpStatus().name())
+                        .code(errorCode.name())
+                        .message(message)
+                        .build());
+    }
 }

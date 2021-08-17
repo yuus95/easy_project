@@ -85,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 // authorizeRequest() 인증절차에 대한 설정을 진행
                 .authorizeRequests()
                 // antMatchers()  : 특정 URL에 대해서 어떻게 인증처리를 할지 결정
-                .antMatchers("/**","/auth/**").permitAll()
+                .antMatchers("/auth/**").permitAll()
                 // anyRequest: 모든요청에 대하여
                 // authenticated: 스프링 시큐리티 컨텍스트 내에서 인증이 완료되야 api를 사용할 수 있다.
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요

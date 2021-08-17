@@ -4,6 +4,7 @@ import com.yushin.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,19 @@ public interface MemberAccountRepository extends JpaRepository<MemberAccount,Lon
 
     @Query("select ma from MemberAccount ma where ma.member.id = :memberId")
     List<MemberAccount> findAllByMemberId(@Param("memberId") long id);
+
+    Optional<MemberAccount> findByMemberAndBankAccount(Member member,String bankAccount);
+
+    boolean existsByMemberAndBankAccount(Member member,String bankAccount);
+
+    long countByMember(Member member);
+
+    boolean existsByBankAccountAndMember(String bankAccount,Member member);
+    
+    /**
+     * delete문에는 Transaction이 필요하다
+     */
+    @Transactional
+    void deleteByBankAccount(String bankAccount);
+
 }

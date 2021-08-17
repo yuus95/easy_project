@@ -46,4 +46,15 @@ public class MemberAccountController {
     public ResponseEntity<responseDto> AllAccount(@PathVariable long id){
         return new ResponseEntity<responseDto>(new responseDto<>(200,"은행 모든 계좌 조회 성공",memberAccountService.AllAccount(id)),HttpStatus.OK);
     }
+
+    @DeleteMapping("/api/myAccount")
+    public ResponseEntity<?> deleteAccount(@RequestParam("id") long id, @RequestParam("account") String account){
+        if (account == null){
+            ValidationErrorResponse er = new ValidationErrorResponse(400,"계좌를 입력해주세요");
+            return new ResponseEntity<ValidationErrorResponse>(er,HttpStatus.BAD_REQUEST);
+        }
+        memberAccountService.DeleteAccount(id,account);
+        return new ResponseEntity<>(new responseDto<>(200,"은행 계좌 삭제 성공",null),HttpStatus.OK);
+    }
+
 }

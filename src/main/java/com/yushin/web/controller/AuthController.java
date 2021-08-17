@@ -21,6 +21,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<MemberResponseDto> signup(@Valid @RequestBody MemberRequestDto memberRequestDto, BindingResult bindingResult) {
+
         return ResponseEntity.ok(authService.signup(memberRequestDto));
     }
 
@@ -34,7 +35,6 @@ public class AuthController {
 //                errorMap.put(error.getField(),error.getDefaultMessage());
 //            }
 //        }
-
         return ResponseEntity.ok(authService.login(loginDto));
     }
 

@@ -46,10 +46,10 @@ public class AuthService {
         }
         Optional<Member> byEmail = memberRepository.findByEmail(loginDto.getEmail());
 
-        String password = byEmail.get().getPassword();
-        if (!passwordEncoder.matches(loginDto.getPassword(),password)){
-            throw new CustomException(NOT_MATCHED_PASSWORD);
-        }
+//        String password = byEmail.get().getPassword();
+//        if (!passwordEncoder.matches(loginDto.getPassword(),password)){
+//            throw new CustomException(NOT_MATCHED_PASSWORD);
+//        }
 
 
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성

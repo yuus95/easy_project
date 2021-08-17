@@ -1,6 +1,9 @@
 package com.yushin.handler.aop;
 
 
+import com.yushin.handler.ex.CustomException;
+import com.yushin.handler.ex.CustomValidationException;
+import com.yushin.handler.ex.ErrorCode;
 import com.yushin.handler.ex.ValidationErrorResponse;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -22,8 +25,8 @@ public class ValidationAdvice {
                 BindingResult bindingResult = (BindingResult) arg;
 
                 if (bindingResult.hasErrors()) {
-                    ValidationErrorResponse er = new ValidationErrorResponse(400,bindingResult.getAllErrors().get(0).getDefaultMessage());
-                    return new ResponseEntity<ValidationErrorResponse>(er,HttpStatus.BAD_REQUEST);
+                   String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+                    throw  new CustomValidationException(message);
                 }
 
             }
