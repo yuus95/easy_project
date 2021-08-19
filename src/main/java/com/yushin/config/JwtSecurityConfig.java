@@ -3,6 +3,7 @@ package com.yushin.config;
 
 import com.yushin.jwt.JwtFilter;
 import com.yushin.jwt.TokenProvider;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
