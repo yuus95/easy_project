@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class balanceDto {
-    private BigDecimal payment; // 결제
+public class BalanceDto {
     private BigDecimal deposit; // 입금
-    private BigDecimal transfer; // 이체
+    private BigDecimal minus_money; // 결제
+
 
 }

@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Transaction extends baseEntity {
+public class Transactions extends baseEntity {
 
 
     @Id

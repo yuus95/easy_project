@@ -1,33 +1,36 @@
 package com.yushin.domain.transaction;
 
 import com.yushin.domain.Address;
-import com.yushin.domain.QAddress;
 import com.yushin.domain.member.Authority;
 import com.yushin.domain.member.Member;
 import com.yushin.domain.member.MemberRepository;
+import com.yushin.web.dto.transaction.BalanceDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.util.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
-class TransactionRepositoryTest {
+@Transactional
+class TransactionsRepositoryTest {
 
     @Autowired
-    TransactionRepository transactionRepository;
+    TransactionsRepository transactionsRepository;
 
     @Autowired
     MemberRepository memberRepository;
@@ -46,8 +49,8 @@ class TransactionRepositoryTest {
                         .build());
 
 
-        Transaction 김유신 = transactionRepository.save(
-                Transaction.builder()
+        Transactions 김유신 = transactionsRepository.save(
+                Transactions.builder()
                         .bankAccount("7560010003226")
                         .transactionType(TransactionType.deposit)
                         .money(new BigDecimal("100000"))
@@ -56,8 +59,8 @@ class TransactionRepositoryTest {
                         .member(member)
                         .build());
 
-        Transaction 김유신1 = transactionRepository.save(
-                Transaction.builder()
+        Transactions 김유신1 = transactionsRepository.save(
+                Transactions.builder()
                         .bankAccount("7560010003226")
                         .transactionType(TransactionType.deposit) // 입금
                         .money(new BigDecimal("10000"))
@@ -65,8 +68,8 @@ class TransactionRepositoryTest {
                         .counterparty_account("")
                         .member(member)
                         .build());
-        Transaction 김유2 = transactionRepository.save(
-                Transaction.builder()
+        Transactions 김유2 = transactionsRepository.save(
+                Transactions.builder()
                         .bankAccount("7560010003226")
                         .transactionType(TransactionType.deposit)
                         .money(new BigDecimal("10000"))
@@ -74,8 +77,8 @@ class TransactionRepositoryTest {
                         .counterparty_account("")
                         .member(member)
                         .build());
-        Transaction 김유신3 = transactionRepository.save(
-                Transaction.builder()
+        Transactions 김유신3 = transactionsRepository.save(
+                Transactions.builder()
                         .bankAccount("7560010003226")
                         .transactionType(TransactionType.transfer) // 이체
                         .money(new BigDecimal("6000"))
@@ -83,8 +86,8 @@ class TransactionRepositoryTest {
                         .counterparty_account("010666622222")
                         .member(member)
                         .build());
-        Transaction 김유신4 = transactionRepository.save(
-                Transaction.builder()
+        Transactions 김유신4 = transactionsRepository.save(
+                Transactions.builder()
                         .bankAccount("7560010003226")
                         .transactionType(TransactionType.payment) //결제
                         .money(new BigDecimal("30000"))
@@ -103,13 +106,13 @@ class TransactionRepositoryTest {
         List<Member> all = memberRepository.findAll();
 
         //when
-        List<Transaction> byMember = transactionRepository.findAllByMember(all.get(0));
+        List<Transactions> byMember = transactionsRepository.findAllByMember(all.get(0));
 
         //then
-        for (Transaction transaction : byMember) {
-            System.out.println("transaction == >  " + transaction.getBankAccount());
-            System.out.println("transaction == >  " + transaction.getMember());
-            System.out.println("transaction == >  " + transaction.getMoney());
+        for (Transactions transactions : byMember) {
+            System.out.println("transaction == >  " + transactions.getBankAccount());
+            System.out.println("transaction == >  " + transactions.getMember());
+            System.out.println("transaction == >  " + transactions.getMoney());
 
         }
     }
@@ -120,13 +123,13 @@ class TransactionRepositoryTest {
         //given
 
         //when
-        List<Transaction> byMember = transactionRepository.findAllByBankAccount("7560010003226");
+        List<Transactions> byMember = transactionsRepository.findAllByBankAccount("7560010003226");
 
         //then
-        for (Transaction transaction : byMember) {
-            System.out.println("transaction == >  " + transaction.getBankAccount());
-            System.out.println("transaction == >  " + transaction.getMember());
-            System.out.println("transaction == >  " + transaction.getMoney());
+        for (Transactions transactions : byMember) {
+            System.out.println("transaction == >  " + transactions.getBankAccount());
+            System.out.println("transaction == >  " + transactions.getMember());
+            System.out.println("transaction == >  " + transactions.getMoney());
         }
     }
 
@@ -137,14 +140,14 @@ class TransactionRepositoryTest {
         List<Member> all = memberRepository.findAll();
 
         //when
-        List<Transaction> byMember = transactionRepository.findAllByTransactionTypeAndMember(TransactionType.deposit,all.get(0));
+        List<Transactions> byMember = transactionsRepository.findAllByTransactionTypeAndMember(TransactionType.deposit,all.get(0));
 
         //then
         System.out.println("findByTransactionTypeAndMember 테스트");
-        for (Transaction transaction : byMember) {
-            System.out.println("transaction == >  " + transaction.getBankAccount());
-            System.out.println("transaction == >  " + transaction.getMember());
-            System.out.println("transaction == >  " + transaction.getMoney());
+        for (Transactions transactions : byMember) {
+            System.out.println("transaction == >  " + transactions.getBankAccount());
+            System.out.println("transaction == >  " + transactions.getMember());
+            System.out.println("transaction == >  " + transactions.getMoney());
         }
 
         Assertions.assertThat(byMember.get(0).getBankAccount()).isEqualTo("7560010003226");
@@ -163,14 +166,14 @@ class TransactionRepositoryTest {
         System.out.println("endDateTime "+ endDate);
 
         //when
-        List<Transaction> byMember = transactionRepository.findAllByMemberAndCreateDateBetween(all.get(0),startDate,endDate);
+        List<Transactions> byMember = transactionsRepository.findAllByMemberAndCreateDateBetween(all.get(0),startDate,endDate);
 
         //then
         System.out.println("findByTransactionTypeAndMember 테스트");
-        for (Transaction transaction : byMember) {
-            System.out.println("transaction == >  " + transaction.getBankAccount());
-            System.out.println("transaction == >  " + transaction.getMember());
-            System.out.println("transaction == >  " + transaction.getMoney());
+        for (Transactions transactions : byMember) {
+            System.out.println("transaction == >  " + transactions.getBankAccount());
+            System.out.println("transaction == >  " + transactions.getMember());
+            System.out.println("transaction == >  " + transactions.getMoney());
         }
 
     }
@@ -185,12 +188,12 @@ class TransactionRepositoryTest {
 
 //        StringUtils.hasText() "", null 처리
         //when
-        List<Transaction> search = transactionRepository.search(all.get(0),null ,startDate, endDate);
+        List<Transactions> search = transactionsRepository.search(all.get(0),null ,startDate, endDate);
 
 
         //then
-        for (Transaction transaction : search) {
-            System.out.println("transace.type  " + transaction.getTransactionType());
+        for (Transactions transactions : search) {
+            System.out.println("transace.type  " + transactions.getTransactionType());
         }
     }
 
@@ -203,13 +206,54 @@ class TransactionRepositoryTest {
 
 //        StringUtils.hasText() "", null 처리
         //when
-        BigDecimal byDeposit = transactionRepository.findByDeposit(all.get(0));
-        BigDecimal byTransferAndPayment = transactionRepository.findByTransferAndPayment(all.get(0));
+        BigDecimal byDeposit = transactionsRepository.findByDeposit(all.get(0));
+        BigDecimal byTransferAndPayment = transactionsRepository.findByTransferAndPayment(all.get(0));
 
         //then
         System.out.println("balance == ? "   + byDeposit);
         System.out.println("minus_balance == ? "  + byTransferAndPayment);
         System.out.println("balance =!? "  + byDeposit.subtract(byTransferAndPayment).setScale(0));
+    }
 
+    @Test
+    public void get_balanceTest() throws Exception{
+        //given
+        List<Member> all = memberRepository.findAll();
+        LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0,0)); //어제 00:00:00
+        LocalDateTime endDate = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59)); //오늘 24:00:00
+
+//        StringUtils.hasText() "", null 처리
+        //when
+         Optional<BalanceDto>balanceDto = transactionsRepository.getBalance(all.get(0).getId());
+
+        //then
+        if (balanceDto.isEmpty()){
+            System.out.println("balance = ? "  + balanceDto);
+            System.out.println("데이터 x");
+        }
+        else {
+            System.out.println("balancedto.moeny" + balanceDto.get().getDeposit());
+            System.out.println("balancedto.minusmoeny" + balanceDto.get().getMinus_money());
+        }
+    }
+
+    @Test
+    public void findByMemberId() throws Exception{
+        //given
+        List<Member> all = memberRepository.findAll();
+        LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0,0)); //어제 00:00:00
+        LocalDateTime endDate = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59)); //오늘 24:00:00
+
+//        StringUtils.hasText() "", null 처리
+        //when
+        PageRequest pageRequest = PageRequest.of(3, 3, Sort.by("createAt").descending());
+        Page<Transactions> pageByMemberId = transactionsRepository.findPageByMemberId(all.get(0).getId(), pageRequest);
+
+
+        //then
+        for (Transactions transactions : pageByMemberId) {
+            System.out.println(" transactions == " + transactions.getId());
+            System.out.println(" transactions == " + transactions.getMoney());
+        }
     }
 }

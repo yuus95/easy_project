@@ -11,6 +11,7 @@ import com.yushin.web.dto.memberAccount.MemberAccountRequestDto;
 import com.yushin.web.dto.memberAccount.MemberAccountResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class MemberAccountService {
     /**
      * 계좌 등록
      */
+    @Transactional
     public void register(MemberAccountRequestDto  memberAccountRequestDto,long id){
         Optional<Member> byId = memberRepository.findById(id);
         if (memberAccountRepository.existsByBankAccountAndMember(memberAccountRequestDto.getBankAccount(),byId.get())){
@@ -41,6 +43,7 @@ public class MemberAccountService {
         MemberAccount save = memberAccountRepository.save(memberAccountRequestDto.toMemberAccount(byId.get()));
     }
 
+    @Transactional(readOnly = true)
     public MemberAccountResponseDto getOneAccount(long id, String account){
 
 
@@ -52,6 +55,7 @@ public class MemberAccountService {
        return MemberAccountResponseDto.of(byMemberIdandBankAccount.get());
     }
 
+    @Transactional(readOnly = true)
     public List<MemberAccountResponseDto> AllAccount(long id){
 
 
@@ -65,7 +69,7 @@ public class MemberAccountService {
                 .collect(Collectors.toList());
         return maDtoList;
     }
-
+    @Transactional
     public void DeleteAccount(long id,String bankAccount){
         Optional<Member> byId = memberRepository.findById(id);
 
