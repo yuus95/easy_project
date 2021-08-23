@@ -2,6 +2,7 @@ package com.yushin.web.dto.transaction;
 
 
 import com.yushin.domain.transaction.TransactionType;
+import com.yushin.domain.transaction.Transactions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NegativeOrZero;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 @Data
 public class TransactionsDto {
 
+    private static DecimalFormat df = new DecimalFormat("###,###");
 
     private long id;
 
@@ -36,4 +39,15 @@ public class TransactionsDto {
     private LocalDateTime createDate;
 
 
+
+
+    public static TransactionsDto of(Transactions transactions){
+        return new TransactionsDto(
+                transactions.getId(),
+                transactions.getBankAccount(),
+                df.format(transactions.getMoney())+"원",
+                transactions.getTransactionType(),
+                transactions.getCreateDate()
+                );
+    }
 }

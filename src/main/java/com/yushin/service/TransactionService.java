@@ -1,6 +1,8 @@
 package com.yushin.service;
 
 
+import com.querydsl.core.Tuple;
+import com.yushin.domain.transaction.TransactionType;
 import com.yushin.domain.transaction.Transactions;
 import com.yushin.domain.transaction.TransactionsRepository;
 import com.yushin.handler.ex.CustomValidationException;
@@ -16,7 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,17 +66,12 @@ public class TransactionService {
 
         return  money+"원";
     }
-
+    
+    
+    /**
+     * 동적쿼리 사용전 거래유형 가져오는 함수
+     */
     public Page<TransactionsDto> getTransaction(long id,int page,int size, String sort) {
-
-        if (page < 0){
-            throw  new CustomValidationException("페이지는 필수입니다.");
-        }
-        if (size == 0 ){
-            throw  new CustomValidationException("size는 필수입니다.");
-        }if (sort == "" || sort == null ){
-            throw  new CustomValidationException("sort는 필수입니다.");
-        }
         DecimalFormat df = new DecimalFormat("###,###");
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sort).descending());
@@ -85,7 +88,32 @@ public class TransactionService {
         );
 
         return dtoPage;
+    }
+    
+    @Transactional(readOnly = true)
+    public List<TransactionsDto> getTransactionType(long id,String account,String type,int startPage,int endPage,String startDate, String endDate) {
 
+
+        LocalDateTime stDate = LocalDateTime.of(LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE), LocalTime.of(0,0,0));
+        LocalDateTime edDate = LocalDateTime.of(LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE), LocalTime.of(23,59,59));
+        TransactionType ttType = null;
+
+        if (type.equals("transfer")){
+            ttType = TransactionType.transfer;
+        }
+        else if(type.equals("deposit")){
+            ttType = TransactionType.deposit;
+        }
+        else if(type.equals("payment")){
+            ttType = TransactionType.payment;
+        }
+
+    
+        List<TransactionsDto> collect = transactionsRepository.search(id, account, ttType, startPage, endPage, stDate, edDate)
+                .stream().map(o -> TransactionsDto.of(o))
+                .collect(Collectors.toList());
+
+        return collect;
 
     }
 }

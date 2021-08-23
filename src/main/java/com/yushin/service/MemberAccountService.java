@@ -43,6 +43,9 @@ public class MemberAccountService {
         MemberAccount save = memberAccountRepository.save(memberAccountRequestDto.toMemberAccount(byId.get()));
     }
 
+    /**
+     * 계좌한개 등록
+     */
     @Transactional(readOnly = true)
     public MemberAccountResponseDto getOneAccount(long id, String account){
 

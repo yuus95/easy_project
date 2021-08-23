@@ -2,11 +2,14 @@ package com.yushin.domain.transaction;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yushin.domain.member.Member;
 import com.yushin.web.dto.transaction.BalanceDto;
+import com.yushin.web.dto.transaction.TransactionsDto;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
@@ -29,16 +32,21 @@ public class TransactionsRepositoryImpl implements TransactionsRepositoryCustom 
 
 
     @Override
-    public List<Transactions> search(Member member, TransactionType type, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Transactions> search(long memberId, String account, TransactionType type, int startPage , int endPage, LocalDateTime startDate, LocalDateTime endDate) {
         return jpaQueryFactory
                 .select(transactions)
                 .from(transactions)
-                .where((transactions.member.eq(member))
+                .where((transactions.member.id.eq(memberId))
                         ,typeEq(type)
+                        ,accountEq(account)
                 ,transactions.createDate.between(startDate,endDate))
+                .offset(startPage)
+                .limit(endPage)
+                .orderBy(transactions.createDate.desc())
                 .fetch();
 
     }
+
 
     @Override
     public Optional<BalanceDto> getBalance(long id) {
@@ -72,4 +80,11 @@ public class TransactionsRepositoryImpl implements TransactionsRepositoryCustom 
     private BooleanExpression typeEq(TransactionType type) {
         return type != null ? transactions.transactionType.eq(type) : null;
     }
+
+
+
+    private Predicate accountEq(String account) {
+        return account != null ? transactions.bankAccount.eq(account) :null;
+    }
+
 }

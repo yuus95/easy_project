@@ -1,10 +1,12 @@
 package com.yushin.domain.transaction;
 
+import com.querydsl.core.Tuple;
 import com.yushin.domain.Address;
 import com.yushin.domain.member.Authority;
 import com.yushin.domain.member.Member;
 import com.yushin.domain.member.MemberRepository;
 import com.yushin.web.dto.transaction.BalanceDto;
+import com.yushin.web.dto.transaction.TransactionsDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +50,7 @@ class TransactionsRepositoryTest {
                         .birthDay("19951119")
                         .authority(Authority.ROLE_USER)
                         .build());
+
 
 
         Transactions 김유신 = transactionsRepository.save(
@@ -185,16 +189,14 @@ class TransactionsRepositoryTest {
         List<Member> all = memberRepository.findAll();
         LocalDateTime startDate = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0,0)); //어제 00:00:00
         LocalDateTime endDate = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59)); //오늘 24:00:00
-
+        String account = "7560010003226";
 //        StringUtils.hasText() "", null 처리
         //when
-        List<Transactions> search = transactionsRepository.search(all.get(0),null ,startDate, endDate);
+        List<Transactions> search = transactionsRepository.search(all.get(0).getId(), account, TransactionType.transfer, 0, 3, startDate, endDate);
 
 
         //then
-        for (Transactions transactions : search) {
-            System.out.println("transace.type  " + transactions.getTransactionType());
-        }
+
     }
 
     @Test
@@ -256,4 +258,23 @@ class TransactionsRepositoryTest {
             System.out.println(" transactions == " + transactions.getMoney());
         }
     }
+
+
+    @Test
+    public void 시간() throws Exception{
+        //given
+        String time = "2021-08-21";
+
+        //when
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+        LocalDateTime realTime = LocalDateTime.parse(time,formatter);
+
+        String input = "1994-08-01 14:37:44";
+        LocalDateTime ldt = LocalDateTime.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        //then
+        System.out.println("realtime == ? "  + realTime);
+    }
+
+
 }
