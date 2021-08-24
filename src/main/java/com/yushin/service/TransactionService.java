@@ -40,6 +40,9 @@ public class TransactionService {
 
 
 
+    /**
+     * 잔액 보여주는 api
+     */
     @Transactional(readOnly = true)
     public String getBalnce(long id) {
         Optional<BalanceDto> balanceDto = transactionsRepository.getBalance(id);
@@ -90,6 +93,12 @@ public class TransactionService {
         return dtoPage;
     }
     
+    
+    /**
+     * 동적쿼리  계좌 거래내역 조회
+     * account,type 넣어도 되고 안넣어됨
+     *
+     */
     @Transactional(readOnly = true)
     public List<TransactionsDto> getTransactionType(long id,String account,String type,int startPage,int endPage,String startDate, String endDate) {
 

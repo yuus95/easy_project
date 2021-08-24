@@ -44,12 +44,10 @@ public class MemberAccountService {
     }
 
     /**
-     * 계좌한개 등록
+     * 계좌한개 조회
      */
     @Transactional(readOnly = true)
     public MemberAccountResponseDto getOneAccount(long id, String account){
-
-
         Optional<MemberAccount> byMemberIdandBankAccount =memberAccountRepository.findByMemberIdandBankAccount(id, account);
         if (byMemberIdandBankAccount.isEmpty()){
             throw new CustomException(CANNOT_FIND_ACCOUNT);
@@ -57,11 +55,11 @@ public class MemberAccountService {
 
        return MemberAccountResponseDto.of(byMemberIdandBankAccount.get());
     }
-
+    /**
+     * 유저 계좌 모두 조회
+     */
     @Transactional(readOnly = true)
     public List<MemberAccountResponseDto> AllAccount(long id){
-
-
         List<MemberAccount> allByMemberId = memberAccountRepository.findAllByMemberId(id);
         if (allByMemberId.size() == 0){
             return null;
@@ -72,6 +70,10 @@ public class MemberAccountService {
                 .collect(Collectors.toList());
         return maDtoList;
     }
+    
+    /**
+     * 계좌 조회
+     */
     @Transactional
     public void DeleteAccount(long id,String bankAccount){
         Optional<Member> byId = memberRepository.findById(id);

@@ -13,6 +13,4 @@ import java.math.BigDecimal;
 public class BalanceDto {
     private BigDecimal deposit; // 입금
     private BigDecimal minus_money; // 결제
-
-
 }

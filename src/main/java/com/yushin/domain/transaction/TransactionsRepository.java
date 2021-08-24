@@ -28,8 +28,6 @@ public interface TransactionsRepository extends JpaRepository<Transactions,Long>
     //거래내역 전체 조회
     List<Transactions> findAllByMember(Member member);
 
-    //계좌별 거래내역 조회
-    List<Transactions> findAllByBankAccount(String bankAccount);
 
    //거래내역 유형별 조회
    List<Transactions> findAllByTransactionTypeAndMember(TransactionType transactionType, Member member);
