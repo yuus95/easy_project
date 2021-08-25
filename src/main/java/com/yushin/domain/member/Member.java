@@ -24,19 +24,32 @@ public class Member extends baseEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(length = 25 ,nullable = false)
+//    @Column(length = 25 ,nullable = false)
+    @Column
     private String phone;
 
-    @Column(nullable = false)
+    @Column
     private String birthDay;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+    public Member update(String name){
+        this.nickname=name;
+        return this;
+    }
 
+
+    public String getKey(Authority authority){
+        if (authority == Authority.ROLE_USER){
+            return "ROLE_USER";
+        }
+        else{
+            return "ROLE_ADMIN";
+        }
+    }
 
     @Builder
     public Member(String nickname, String email, String password, String phone, String birthDay,Authority authority){

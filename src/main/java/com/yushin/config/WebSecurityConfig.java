@@ -3,6 +3,7 @@ package com.yushin.config;
 import com.yushin.jwt.JwtAccessDeniedHandler;
 import com.yushin.jwt.JwtAuthenticationEntryPoint;
 import com.yushin.jwt.TokenProvider;
+import com.yushin.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 
 import static org.hibernate.criterion.Restrictions.and;
 
@@ -26,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     /**
      * DB에 패스워드를 모두 인코딩된 상태로 저장하기위해 사용
@@ -63,6 +65,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                  * 인증과정에서 실패하거나 인증헤더를 보내지 않게 되는 경우 401응답값을 보내도록 처리해주는 인터페이스 -
                  */
 
+                .formLogin()
+                .disable()
+
                 // exception handling 할 때 우리가 만든 클래스를 추가
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -85,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 // authorizeRequest() 인증절차에 대한 설정을 진행
                 .authorizeRequests()
                 // antMatchers()  : 특정 URL에 대해서 어떻게 인증처리를 할지 결정
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/**","/login/**","/oauth2/**").permitAll()
                 // anyRequest: 모든요청에 대하여
                 // authenticated: 스프링 시큐리티 컨텍스트 내에서 인증이 완료되야 api를 사용할 수 있다.
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
@@ -93,10 +98,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
-                .and()
 
-                .formLogin()
-                .disable();
+
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint() // OAuth2 로그인 성공 이후 사용자 정보를 가져올 떄의 설정을 담당
+                .userService(customOAuth2UserService) ;//소셜 로그인 성공 시 후속 조치를 진행할 UserService 인터페이스의 구현체를 등록
+
+
+
 
         /**
          * jwt 없이 필터 적용

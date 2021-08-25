@@ -30,8 +30,8 @@ public class MemberAccountService {
      * 계좌 등록
      */
     @Transactional
-    public void register(MemberAccountRequestDto  memberAccountRequestDto,long id){
-        Optional<Member> byId = memberRepository.findById(id);
+    public void register(MemberAccountRequestDto  memberAccountRequestDto){
+        Optional<Member> byId = memberRepository.findById(memberAccountRequestDto.getMemberId());
         if (memberAccountRepository.existsByBankAccountAndMember(memberAccountRequestDto.getBankAccount(),byId.get())){
             throw new CustomException(DUPLICATE_ACCOUNT);
         }

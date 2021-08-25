@@ -122,20 +122,7 @@ class TransactionsRepositoryTest {
     }
 
 
-    @Test
-    public void  findByBankAccount테스트() throws Exception{
-        //given
 
-        //when
-        List<Transactions> byMember = transactionsRepository.findAllByBankAccount("7560010003226");
-
-        //then
-        for (Transactions transactions : byMember) {
-            System.out.println("transaction == >  " + transactions.getBankAccount());
-            System.out.println("transaction == >  " + transactions.getMember());
-            System.out.println("transaction == >  " + transactions.getMoney());
-        }
-    }
 
 
     @Test

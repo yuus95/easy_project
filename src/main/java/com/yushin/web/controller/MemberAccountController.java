@@ -1,5 +1,6 @@
 package com.yushin.web.controller;
 
+import com.yushin.handler.ex.CustomValidationException;
 import com.yushin.handler.ex.ValidationErrorResponse;
 import com.yushin.service.MemberAccountService;
 import com.yushin.web.dto.memberAccount.MemberAccountRequestDto;
@@ -23,9 +24,9 @@ public class MemberAccountController {
      *
      */
 
-    @PostMapping("/api/account-register/{id}")
-    public ResponseEntity<?> registAccount(@Valid @RequestBody MemberAccountRequestDto memberAccountRequestDto, BindingResult bindingResult, @PathVariable long id){
-        memberAccountService.register(memberAccountRequestDto,id);
+    @PostMapping("/api/account-register")
+    public ResponseEntity<?> registAccount(@Valid @RequestBody MemberAccountRequestDto memberAccountRequestDto, BindingResult bindingResult){
+        memberAccountService.register(memberAccountRequestDto);
 
         return new ResponseEntity<>(new ResponseDto<>(200, "은행 계좌 등록 성공!", null), HttpStatus.OK);
     }
@@ -33,8 +34,7 @@ public class MemberAccountController {
     @GetMapping("/api/account")
     public ResponseEntity<?> oneAccount(@RequestParam("id") long id, @RequestParam("account") String account){
         if (account == null){
-            ValidationErrorResponse er = new ValidationErrorResponse(400,"계좌를 입력해주세요");
-            return new ResponseEntity<ValidationErrorResponse>(er,HttpStatus.BAD_REQUEST);
+            throw  new CustomValidationException("계좌를 입력해주세요.");
         }
 
         return new ResponseEntity<>(new ResponseDto<>(200,"은행 계좌 조회 성공",memberAccountService.getOneAccount(id,account)),HttpStatus.OK);
@@ -48,8 +48,7 @@ public class MemberAccountController {
     @DeleteMapping("/api/account")
     public ResponseEntity<?> deleteAccount(@RequestParam("id") long id, @RequestParam("account") String account){
         if (account == null){
-            ValidationErrorResponse er = new ValidationErrorResponse(400,"계좌를 입력해주세요");
-            return new ResponseEntity<ValidationErrorResponse>(er,HttpStatus.BAD_REQUEST);
+            throw  new CustomValidationException("계좌를 입력해주세요.");
         }
         memberAccountService.DeleteAccount(id,account);
         return new ResponseEntity<>(new ResponseDto<>(200,"은행 계좌 삭제 성공",null),HttpStatus.OK);

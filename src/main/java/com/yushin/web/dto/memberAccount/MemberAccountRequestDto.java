@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
@@ -16,8 +17,8 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class MemberAccountRequestDto {
 
-
-
+    @NotNull(message = "멤버아이디값은 필수입니다.")
+    private Long memberId;
     @NotBlank(message = "은행이름은 필수입니다.")
     private String bankName;
 
