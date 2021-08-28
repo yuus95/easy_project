@@ -90,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 // authorizeRequest() 인증절차에 대한 설정을 진행
                 .authorizeRequests()
                 // antMatchers()  : 특정 URL에 대해서 어떻게 인증처리를 할지 결정
-                .antMatchers("/auth/**","/login/**","/oauth2/**").permitAll()
+                .antMatchers("/auth/**","/login/**","/oauth2/**","/**").permitAll()
                 // anyRequest: 모든요청에 대하여
                 // authenticated: 스프링 시큐리티 컨텍스트 내에서 인증이 완료되야 api를 사용할 수 있다.
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
@@ -103,8 +103,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint() // OAuth2 로그인 성공 이후 사용자 정보를 가져올 떄의 설정을 담당
-                .userService(customOAuth2UserService) ;//소셜 로그인 성공 시 후속 조치를 진행할 UserService 인터페이스의 구현체를 등록
+                .userService(customOAuth2UserService);//소셜 로그인 성공 시 후속 조치를 진행할 UserService 인터페이스의 구현체를 등록
 
+
+/**
+ * 0828 내일 다시 만져보기 Oauth2.0
+ */
+//                .and()
+//                .successHandler();
 
 
 
