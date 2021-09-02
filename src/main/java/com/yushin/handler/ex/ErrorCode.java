@@ -18,6 +18,10 @@ public enum ErrorCode {
     CANNOT_FOLLOW_MYSELF(BAD_REQUEST, "자기 자신은 팔로우 할 수 없습니다"),
     ACCOUNT_OVER(BAD_REQUEST,"계좌는 최대 5개 등록할 수 있습니다."),
     VALID_ERROR(BAD_REQUEST,""),
+    CANNOT_REDIRECT_URI(BAD_REQUEST,"URI를 찾을 수 없습니다."),
+    CANNOT_PROVIDER(BAD_REQUEST,"요청을 승인할 수 없습니다."),
+
+
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     NOT_TOKEN(UNAUTHORIZED,"JWT토큰이 없습니다."),

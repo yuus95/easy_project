@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @NoArgsConstructor
@@ -40,6 +41,11 @@ public class Member extends baseEntity {
         this.nickname=name;
         return this;
     }
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
 
 
     public String getKey(Authority authority){
@@ -52,15 +58,16 @@ public class Member extends baseEntity {
     }
 
     @Builder
-    public Member(String nickname, String email, String password, String phone, String birthDay,Authority authority){
+    public Member(String nickname, String email, String password, String phone, String birthDay,Authority authority,AuthProvider provider,String providerId){
         this.nickname =nickname;
         this.email=email;
         this.password = password;
         this.phone=phone;
         this.birthDay =birthDay;
         this.authority = authority;
+        this.provider = provider;
+        this.providerId = providerId;
 
     }
-
 
 }

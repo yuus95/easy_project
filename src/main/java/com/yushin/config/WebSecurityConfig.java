@@ -3,6 +3,9 @@ package com.yushin.config;
 import com.yushin.jwt.JwtAccessDeniedHandler;
 import com.yushin.jwt.JwtAuthenticationEntryPoint;
 import com.yushin.jwt.TokenProvider;
+import com.yushin.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.yushin.security.oauth.OAuth2AuthenticationFailureHandler;
+import com.yushin.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.yushin.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
+
 
     /**
      * DB에 패스워드를 모두 인코딩된 상태로 저장하기위해 사용
@@ -98,14 +109,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
-
-
                 .and()
                 .oauth2Login()
-                .userInfoEndpoint() // OAuth2 로그인 성공 이후 사용자 정보를 가져올 떄의 설정을 담당
-                .userService(customOAuth2UserService);//소셜 로그인 성공 시 후속 조치를 진행할 UserService 인터페이스의 구현체를 등록
-
-
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorize")
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .and()
+                .redirectionEndpoint()
+                .baseUri("/oauth2/callback/*")
+                .and()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
 /**
  * 0828 내일 다시 만져보기 Oauth2.0
  */

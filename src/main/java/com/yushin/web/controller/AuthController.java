@@ -40,7 +40,6 @@ public class AuthController {
 
     }
 
-    @GetMapping("/")
 
     @PostMapping("/reissue")
     public ResponseEntity<ResponseDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) {

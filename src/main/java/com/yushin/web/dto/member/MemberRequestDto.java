@@ -1,5 +1,6 @@
 package com.yushin.web.dto.member;
 
+import com.yushin.domain.member.AuthProvider;
 import com.yushin.domain.member.Authority;
 import com.yushin.domain.member.Member;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,7 @@ public class MemberRequestDto {
                 .phone(phone)
                 .birthDay(birthDay)
                 .authority(Authority.ROLE_USER)
+                .provider(AuthProvider.local)
                 .build();
     }
 

@@ -3,6 +3,7 @@ package com.yushin.service;
 
 import com.yushin.domain.member.Member;
 import com.yushin.domain.member.MemberRepository;
+import com.yushin.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -42,10 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserDetails createUserDetails(Member member) {
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getAuthority().toString());
 
-        return new User(
-                String.valueOf(member.getId()),
-                member.getPassword(),
-                Collections.singleton(grantedAuthority)
-        );
+        return UserPrincipal.create(member);
+
     }
 }
