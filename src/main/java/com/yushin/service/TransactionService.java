@@ -107,14 +107,17 @@ public class TransactionService {
         LocalDateTime edDate = LocalDateTime.of(LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE), LocalTime.of(23,59,59));
         TransactionType ttType = null;
 
-        if (type.equals("transfer")){
-            ttType = TransactionType.transfer;
-        }
-        else if(type.equals("deposit")){
-            ttType = TransactionType.deposit;
-        }
-        else if(type.equals("payment")){
-            ttType = TransactionType.payment;
+        if (type != null){
+            if (type.equals("transfer")){
+                ttType = TransactionType.transfer;
+            }
+            else if(type.equals("deposit")){
+                ttType = TransactionType.deposit;
+            }
+            else if(type.equals("payment")){
+                ttType = TransactionType.payment;
+            }
+
         }
 
     

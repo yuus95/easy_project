@@ -5,6 +5,7 @@ import com.yushin.domain.member.Member;
 import com.yushin.domain.member.MemberRepository;
 import com.yushin.domain.memberAccount.MemberAccount;
 import com.yushin.domain.memberAccount.MemberAccountRepository;
+import com.yushin.domain.transaction.TransactionsRepository;
 import com.yushin.handler.ex.CustomException;
 import com.yushin.handler.ex.ErrorCode;
 import com.yushin.web.dto.memberAccount.MemberAccountRequestDto;
@@ -24,6 +25,7 @@ import static com.yushin.handler.ex.ErrorCode.*;
 public class MemberAccountService {
     private final MemberAccountRepository memberAccountRepository;
     private final MemberRepository memberRepository;
+    private final TransactionsRepository transactionsRepository;
 
 
     /**
@@ -83,5 +85,6 @@ public class MemberAccountService {
             throw new CustomException(CANNOT_FIND_ACCOUNT);
         }
         memberAccountRepository.deleteByBankAccount(bankAccount);
+        transactionsRepository.deleteByBankAcoount(bankAccount);
     }
 }

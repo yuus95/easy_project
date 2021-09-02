@@ -43,4 +43,5 @@ public interface TransactionsRepository extends JpaRepository<Transactions,Long>
     Page<Transactions> findPageByMemberId(@Param("memberId") long memberId, Pageable pageable);
 
 
+    void deleteByBankAcoount(String bankAccount);
 }
