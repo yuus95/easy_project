@@ -53,5 +53,4 @@ public class MemberAccountController {
         memberAccountService.DeleteAccount(id,account);
         return new ResponseEntity<>(new ResponseDto<>(200,"은행 계좌 삭제 성공",null),HttpStatus.OK);
     }
-
 }

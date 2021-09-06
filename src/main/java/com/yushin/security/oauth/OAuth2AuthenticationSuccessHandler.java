@@ -35,6 +35,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         this.appProperties = appProperties;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
     }
+
+
+    /**
+     * 성공했을 때 실행되는 함수
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineTargetUrl(request, response, authentication);
@@ -54,7 +59,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         String accessToken = tokenProvider.generateTokenDto(authentication).getAccessToken();
 
-        System.out.println("accessToken" + accessToken);
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", accessToken)
                 .build().toUriString();
