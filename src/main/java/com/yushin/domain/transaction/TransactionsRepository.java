@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -42,6 +43,6 @@ public interface TransactionsRepository extends JpaRepository<Transactions,Long>
     @Query(value = "select t  from Transactions t where t.member.id = :memberId",countQuery = "select count(t.id) from Transactions t where t.member.id = :memberId")
     Page<Transactions> findPageByMemberId(@Param("memberId") long memberId, Pageable pageable);
 
-
-    void deleteByBankAcoount(String bankAccount);
+    @Transactional
+    void deleteByBankAccount(String bankAccount);
 }

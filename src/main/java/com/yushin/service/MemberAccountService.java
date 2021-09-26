@@ -80,11 +80,11 @@ public class MemberAccountService {
     public void DeleteAccount(long id,String bankAccount){
         Optional<Member> byId = memberRepository.findById(id);
 
-         memberAccountRepository.existsByMemberAndBankAccount(byId.get(), bankAccount);
+//         memberAccountRepository.existsByMemberAndBankAccount(byId.get(), bankAccount);
         if (!memberAccountRepository.existsByMemberAndBankAccount(byId.get(), bankAccount)){
             throw new CustomException(CANNOT_FIND_ACCOUNT);
         }
         memberAccountRepository.deleteByBankAccount(bankAccount);
-        transactionsRepository.deleteByBankAcoount(bankAccount);
+        transactionsRepository.deleteByBankAccount(bankAccount);
     }
 }
