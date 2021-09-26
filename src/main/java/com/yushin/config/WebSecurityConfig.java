@@ -22,23 +22,23 @@ import static org.hibernate.criterion.Restrictions.and;
 
 /**
  * Spring Security Fliter Chain을 사용한다는것을 명시해주기 위해
- * @EnableWebSecurity 어노테이션 적용
  *
+ * @EnableWebSecurity 어노테이션 적용
  */
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 시큐리티를 활성화하는 어노테이션
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
     @Bean
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
-
 
 
     /**
@@ -63,7 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     /**
      * super()을 삭제하면 기존 시큐리티가 가지고 있는 기능이 다 비활성화
-     *
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -101,7 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 // authorizeRequest() 인증절차에 대한 설정을 진행
                 .authorizeRequests()
                 // antMatchers()  : 특정 URL에 대해서 어떻게 인증처리를 할지 결정
-                .antMatchers("/auth/**","/login/**","/oauth2/**","/**").permitAll()
+                .antMatchers("/auth/**", "/login/**", "/oauth2/**", "/**").permitAll()
                 // anyRequest: 모든요청에 대하여
                 // authenticated: 스프링 시큐리티 컨텍스트 내에서 인증이 완료되야 api를 사용할 수 있다.
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
@@ -128,7 +127,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
  */
 //                .and()
 //                .successHandler();
-
 
 
         /**
