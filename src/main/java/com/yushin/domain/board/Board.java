@@ -32,7 +32,7 @@ public class Board {
     }
 
 
-    public static Board of(BoardRequestDto boardRequestDto){
+    public static Board from (BoardRequestDto boardRequestDto){
         return new Board(boardRequestDto.getTitle(), boardRequestDto.getContent());
     }
 }
